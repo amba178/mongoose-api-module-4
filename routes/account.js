@@ -40,7 +40,7 @@ exports.del = (req, res, next)=>{
     if(!account) return next(new Error('article not found'));
     account.remove(function(error, doc){
       if(error) return next(error);
-      res.send(doc);
+      res.send(`Document is deleted ${doc}`);
     })
   })
 }
