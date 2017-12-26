@@ -14,7 +14,7 @@
  	let account = req.body
  	req.models.Account.create(account, function(error, accountResponse){
  		if(error) return next(error)
- 		res.send(accountResponse)
+ 		res.send(`Doc is created: ${accountResponse}`)
  	}) 
  }
 
@@ -22,12 +22,9 @@
   
   exports.edit = (req, res, next)=>{
   	if(!req.params.id) return next(new Error('No account ID'))
-  	req.models.Account.findById(req.params.id, function(error, account){
+  	req.models.Account.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true}, function(error, account){
   		if(error) return next(error)
-  		account.update({$set: req.body}, function(error, count, raw){
-  			if(error)return next(error)
-  			res.send({affectedCount: count})
-  		})
+ 		res.send(`Doc is updated: ${account}`)
   	})
   }
 
@@ -40,7 +37,7 @@ exports.del = (req, res, next)=>{
     if(!account) return next(new Error('article not found'));
     account.remove(function(error, doc){
       if(error) return next(error);
-      res.send(`Document is deleted ${doc}`);
+      res.send(`Doc is deleted: ${doc}`);
     })
   })
 }
